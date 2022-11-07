@@ -1,6 +1,5 @@
 FROM ruby:2.5.9-alpine
-# ARG precompileassets="not"
-ARG precompileassets
+
 RUN apk --no-cache add --update \
     build-base \
     linux-headers \
@@ -12,7 +11,6 @@ RUN apk --no-cache add --update \
     postgresql-dev \
     postgresql-client \
     postgresql \
-    python2 \
     libffi \
     libxml2-dev \
     libxslt-dev \
@@ -25,7 +23,7 @@ RUN apk --no-cache add --update \
 WORKDIR /api
 
 COPY Gemfile* /api/
-RUN bundle update rake && bundle config set --local path /usr/local/bundle && \
+RUN bundle config set --local path /usr/local/bundle && \
     bundle config build.nokogiri --use-system-libraries && \
     bundle install
 
