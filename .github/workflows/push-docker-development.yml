@@ -18,10 +18,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+        with:
+          short-length: 8 # Same as v3 and before
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:rails"
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: terrastories/terrastories:${{ github.ref_name }}
+          tags: terrastories/terrastories:${{ env.GITHUB_REF_SLUG }}
