@@ -1,0 +1,24 @@
+<% @communities.each do |community| %>
+  <div class="row">
+    <div class="cell cell--icon">
+      <% if community.public? %>
+        <span class="tooltip">
+          <svg width="16" height="16" fill="currentColor">
+            <use href="#icon-eye" />
+          </svg>
+          <span class="tooltip-text"><%= community.slug %></span>
+        </span>
+      <% end %>
+    </div>
+    <div class="cell">
+      <%= link_to community.name, community, class: "row-link" %>
+      <i class="small">
+        <%= t('dashboard.communities.last_updated_on', last_updated_on: community.updated_at.to_date.to_formatted_s(:long)) %>
+      </i>
+    </div>
+    <div class="cell cell--15 cell--right">
+      <%= link_to t("dashboard.actions.edit"), edit_community_path(community) %>
+      <%= link_to t("dashboard.actions.destroy"), community_path(community), method: "delete", data: {confirm: t("dashboard.actions.confirm"), turbo_confirm: t("dashboard.actions.confirm"), turbo_method: :delete} %>
+    </div>
+  </div>
+<% end %>

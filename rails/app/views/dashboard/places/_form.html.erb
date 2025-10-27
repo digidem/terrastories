@@ -1,0 +1,111 @@
+<%= form_with model: @place, multipart: true, class: "form aligned", id: "place_form" do |f| %>
+  <%= render partial: "shared/form_errors", locals: { resource: @place } %>
+
+  <%= f.label :name, class: "required" %>
+  <%= f.text_field :name, required: true %>
+
+  <%= f.label :name_audio %>
+  <%= f.file_field :name_audio %>
+  <% if @place.name_audio.attached? %>
+  <ul class="filename-list">
+  <li class="file-item">
+    <%= link_to @place.name_audio.filename, rails_blob_path(@place.name_audio) %>
+    <%= link_to place_name_audio_path(@place), class: "delete-link", method: "delete", data: {confirm: t("dashboard.actions.confirm"), turbo_confirm: t("dashboard.actions.confirm"), turbo_method: :delete}, remote: true do %>
+      <svg><use href="#icon-cancel"></svg>
+    <% end %>
+  </li>
+  </ul>
+  <% end %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description, rows: 3 %>
+
+  <%= f.label :photo %>
+  <%= f.file_field :photo %>
+
+  <%= f.label :type_of_place %>
+  <%= f.text_field :type_of_place %>
+
+  <%= f.label :region %>
+  <%= f.text_field :region %>
+
+  <%= f.label :story_ids %>
+  <div class="checklist">
+    <%= f.collection_check_boxes :story_ids, current_community.stories, :id, :title %>
+  </div>
+
+  <div class="two-columns">
+    <div class="two-columns-left column-fixed-400">
+      <%= f.label :lat %>
+      <%= f.text_field :lat %>
+
+      <%= f.label :long %>
+      <%= f.text_field :long %>
+    </div>
+    <div class="two-columns-right">
+      <div id="placeMap"></div>
+    </div>
+  </div>
+
+  <%= f.submit %>
+<% end %>
+
+<script>
+const placeForm = document.querySelector("#place_form");
+const placeLatInput = placeForm.querySelector("#place_lat");
+const placeLongInput = placeForm.querySelector("#place_long");
+const coordinates = [placeLongInput.value, placeLatInput.value]
+
+Terrastories.map_utils.mapgl(<%= current_community.theme.use_maplibre? %>).then(lib => {
+  const placeMap = Terrastories.map_utils.interactiveMap(
+    lib,
+    {
+      accessToken: "<%= current_community.theme.mapbox_token %>",
+      container: "placeMap", // container ID
+      center: coordinates, // starting position [lng, lat]
+      hash: false,
+      zoom: <%= current_community.theme.zoom || 5 %>, // starting zoom
+      style: "<%= current_community.theme.map_style_url %>", // style URL or style object
+      basemapStyle: "<%= current_community.theme.basemap_style %>",
+      cooperativeGestures: true,
+      dragRotate: false,
+      pitchWithRotation: false,
+      boxZoom: false,
+      touchPitch: false,
+      touchZoomRotate: false,
+    }
+  );
+
+  const marker = new lib.Marker({draggable: true}).setLngLat(coordinates)
+
+  placeMap.on("load", () => {
+    marker.addTo(placeMap);
+  })
+
+  marker.on("dragend", (e) => {
+    const { lng, lat } = marker.getLngLat()
+
+    placeMap.setCenter([lng, lat])
+  })
+
+  // sync values when the map moves
+  placeMap.on('move', () => {
+    let { lng, lat } = placeMap.getCenter();
+    placeLongInput.value = lng.toFixed(5);
+    placeLatInput.value = lat.toFixed(5);
+    marker.setLngLat({lng, lat});
+  });
+
+  // sync values when input is edited
+  placeLongInput.addEventListener("change", (e) => {
+    let { lat } = placeMap.getCenter();
+    placeMap.setCenter({lng: e.target.value, lat: lat});
+  });
+
+  placeLatInput.addEventListener("change", (e) => {
+    let { lng } = placeMap.getCenter();
+    placeMap.setCenter({lng: lng, lat: e.target.value});
+  });
+
+})
+</script>

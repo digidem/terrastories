@@ -1,0 +1,33 @@
+<div class="onboarding">
+  <div class="onboarding-card">
+    <%= image_tag 'logocombo.svg', alt: 'Terrastories' %>
+
+    <h2><%= t(".create") %></h2>
+
+    <%= form_with model: @community, url: onboard_community_path, multipart: true, locale: true, class: "form" do |f| %>
+      <%= render partial: "shared/form_errors", locals: { resource: @community } %>
+
+      <%= f.label :name, t(".name"), class: "required" %>
+      <%= f.text_field :name %>
+
+      <%= f.label :country %>
+      <%= f.text_field :country %>
+
+      <%= f.label :locale %>
+      <%= f.text_field :locale %>
+
+      <%= f.submit t(".finish") %>
+    <% end %>
+
+
+    <div class="language-picker">
+      <%= t("language") %>:
+      <%= application_locales %>
+    </div>
+  </div>
+
+  <span class="sponsors"><%= t("sponsored_by") %></span>
+  <div class="logo">
+    <%= image_tag "digitaldemocracy.png" %>
+  </div>
+</div>

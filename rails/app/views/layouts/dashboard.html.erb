@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="ROBOTS" content="NOODP">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%= favicon_link_tag asset_path('favicon.ico'), rel: 'icon' %>
+    <title><%= yield (:title) %> - Terrastories</title>
+
+    <%= csrf_meta_tags %>
+
+    <%= javascript_pack_tag 'map_utils', 'data-turbolinks-track': 'reload', defer: false %>
+
+    <%= stylesheet_link_tag 'dashboard' %>
+    <%= javascript_include_tag 'dashboard' %>
+  </head>
+
+  <body class="content-wrapper">
+    <%= render "shared/icons" %>
+    <%= render "shared/flash_messages" %>
+    <div class="content-sidebar">
+      <nav>
+        <%= image_tag "logocombo.svg", alt: "Terrastories", class: "header--logo" %>
+        <% if current_user.super_admin %>
+          <%= link_to "Metrics", metrics_path, class: ("active-link" if params[:controller] == "super_admin/metrics") %>
+          <%= link_to t("communities"), communities_path, class: ("active-link" if params[:controller] == "super_admin/communities") %>
+          <%= link_to "Features", features_path, class: ("active-link" if params[:controller] == "super_admin/features") %>
+        <% else %>
+          <h1><%= current_community.name %></h1>
+          <%= link_to t("stories"), stories_path, class: ("active-link" if params[:controller] == "dashboard/stories") %>
+          <%= link_to t("speakers"), speakers_path, class: ("active-link" if params[:controller] == "dashboard/speakers") %>
+          <%= link_to t("places"), places_path, class: ("active-link" if params[:controller] == "dashboard/places") %>
+        <% end %>
+      </nav>
+
+      <div class="settings">
+        <% if current_user.admin? %>
+          <h5 class="inline-padding"><%= t("dashboard.community_settings") %></h5>
+          <%= link_to t("users"), users_path, class: ("active-link" if params[:controller] == "dashboard/users") %>
+          <%= link_to t("theme"), edit_theme_path, class: ("active-link" if params[:controller] == "dashboard/theme") %>
+          <%= link_to t("import"), import_path, class: ("active-link" if params[:controller] == "dashboard/import") %>
+          <% if Flipper.enabled?(:public_communities, current_community) || Flipper.enabled?(:split_settings, current_community) %>
+            <%= link_to t("community.settings"), community_settings_path, class: ("active-link" if params[:controller] == "dashboard/community") %>
+          <% end %>
+        <% end %>
+        <div class="language-picker">
+          <h5><%= t("language") %></h5>
+          <% I18n.available_locales.sort.each do |locale| %>
+            <span class="tooltip">
+              <%= link_to locale, url_for(locale: locale), class: "badge#{" selected" if locale == I18n.locale}", alt: locale == I18n.locale ? "#{locale} (#{t("selected_language")})" : locale %>
+              <span class="tooltip-text"><%= t("languages.#{locale}")%></span>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="content-main">
+      <div class="observer-sentinel"><%# do not remove this element! %></div>
+      <div class="top-bar">
+        <% if current_user.super_admin %>
+          <div class="super-bar">
+            Super Admin Dashboard
+          </div>
+        <% else %>
+          <form class="search" role="search" method="get" action=<%= search_path %>>
+            <label for="search">
+              <svg class="search__eyeglass-icon" role="img">
+                <title>
+                  <%= t("search.label") %>
+                </title>
+                <use href="#icon-eyeglass" />
+              </svg>
+            </label>
+            <input placeholder=<%= t("search.label") %> class="search__input" type="search" id="search" name="search" value="<%= params[:search] %>" />
+          </form>
+        <% end %>
+        <div class="top-nav">
+          <div class="user-nav">
+            <%= current_user.display_name %>
+            <% if current_user.photo.attached? %>
+              <% if current_user.photo.variable? %>
+                <%= image_tag current_user.photo.variant(resize_to_fill: [300, 300]), class: "img img--rounded img--mini" %>
+              <% else %>
+                <%= image_tag current_user.photo, class: "img img--rounded img--mini" %>
+              <% end %>
+            <% else %>
+              <%= image_tag asset_path("speaker.png"), class: "img img--rounded img--micro" %>
+            <% end %>
+            <ul class="dropdown" aria-label="submenu">
+              <li><%= link_to t("profile"), profile_path %></li>
+              <li><%= link_to t("devise.passwords.edit.change_my_password"), change_password_path %></li>
+              <li><%= link_to t("logout"), logout_path, method: :delete, data: { turbo_method: :delete } %></li>
+            </ul>
+          </div>
+          <%= link_to t("dashboard.back_to_app"), home_map_path unless current_user.super_admin %>
+        </div>
+      </div>
+      <main>
+        <div class="page-heading">
+          <%= yield :main_heading %>
+        </div>
+        <div class="page-content">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    // Sticky Header Observer
+    const pageContentHeader = document.querySelector(".page-heading");
+    const sentinel = document.querySelector(".observer-sentinel");
+
+    const headerObserver = new IntersectionObserver(
+      (entries) => {
+        pageContentHeader.classList.toggle("sticky", !entries[0].isIntersecting )
+      }
+    );
+    headerObserver.observe(sentinel);
+
+    // Infinite Scroll
+    let hasInfiniteScroll = document.querySelector("[data-infinite-scroll]")
+
+    if (hasInfiniteScroll !== null) {
+      const infiniteScrollObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            let next_page = entries[0].target.querySelector("a[rel=next]")
+            if (next_page == null) { return }
+
+            let url = next_page.href
+            fetch(url,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                }
+              })
+              .then((response) => response.json())
+              .then(data => {
+                document.querySelector("[data-infinite-scroll=entries]").insertAdjacentHTML('beforeend', data.entries)
+                if (data.pagination == null) {
+                  next_page.remove()
+                } else {
+                  next_page.setAttribute("href", data.pagination)
+                }
+              })
+          }
+        }
+      );
+      infiniteScrollObserver.observe(document.querySelector("[data-infinite-scroll=pagination]"))
+    }
+
+    // Remote Deletion
+    document.querySelectorAll('.delete-link').forEach(lnk => {
+      lnk.addEventListener('ajax:beforeSend', function(e) {
+        lnk.parentNode.classList.add("deleting");
+      });
+
+      lnk.addEventListener('ajax:success', function(e, args) {
+        let replaceLink = lnk.parentNode.dataset.replaceOnDelete;
+
+        if (replaceLink !== undefined) {
+          lnk.parentNode.querySelector("img").setAttribute("src", replaceLink)
+          lnk.parentNode.classList.remove("deleting");
+        } else {
+          lnk.parentNode.remove();
+        }
+      });
+    });
+
+    // Download CSV via button.csv-download
+    document.querySelectorAll("button.csv-download").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        exportTableToCSV(e.target.dataset.target, e.target.dataset.filename)
+      })
+    })
+
+    // Fadeout Flash Messages after 4 seconds
+    setTimeout(function() {
+      setInterval(function () {
+        var fadeEffect = document.querySelectorAll('.flash').forEach(node => {
+          if (!node.style.opacity)
+            node.style.opacity = 1;
+
+          if (node.style.opacity > 0) {
+              node.style.opacity -= 0.1;
+          } else {
+            clearInterval(fadeEffect);
+
+            let parent = node.parentNode;
+            node.remove();
+
+            if (parent.childElementCount === 0) {
+              parent.remove();
+            }
+          }
+        });
+      }, 100);
+    }, 4000);
+  </script>
+</html>

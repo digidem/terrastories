@@ -1,0 +1,61 @@
+es:
+  profile: Profile
+  interviewer: Entrevistador
+  import: Importar
+  map:
+    center: Centro del mapa
+    bounds: Cuadro delimitador del mapa
+    bounds_description: Los límites del mapa determinan la extensión de dónde puedes hacer scroll sobre el mapa. Sin restricción, el mapa tendrá scroll infinito.
+    sw_corner: SW cuadro delimitador
+    ne_corner: NE cuadro delimitador
+    unrestricted_bounds: Permite límites sin restricción
+    online: Configuración de Mapa en línea
+    settings: Configuración del Mapa
+    settings_description: Personaliza las configuraciones del mapa de tu comunidad.
+    projection:
+      mercator: Mercator
+      albers: Albers
+      equalEarth: Tierra igual
+      equirectangular: Equirectangular
+      lambertConformalConic: Cónica conforme de Lambert
+      naturalEarth: Tierra natural
+      winkelTripel: Winkel Tripel
+      globe: Globo
+  dashboard:
+    communities:
+      last_updated_on: Última actualización el %{last_updated_on}
+    back_to_app: Regresar a la aplicación
+    community_settings: Configuraciones de la comunidad
+    headings:
+      new_resource: Nuevo %{name}
+    actions:
+      confirm: ¿Estás seguro?
+      destroy: Borrar
+      edit: Editar
+      new: Nuevo
+      back: Atrás
+      show_resource: Mostrar %{name}
+    theme:
+      welcome_screen: Pantalla de Bienvenida
+      background_img: Personaliza la imagen de fondo en la página principal de tu comunidad.
+      sponsor_logos: Muestra logotipos en la página de tu comunidad. Esto puede ser el logo de tu organización, o del proyecto de un patrocinador. Se pueden agregar múltiples logotipos.
+  search:
+    clear: Limpiar búsqueda
+    label: Buscar
+    heading: Buscar resultados
+    results: resultados
+  filter:
+    all: Todos
+    any: Cualquier/a
+    label: Filtrar
+    clear: Limpiar filtros
+  list:
+    prev: Ant
+    next: Sig
+    no_results: No hay %{resources} disponibles.
+    no_nested_results: Este %{resource} no tiene %{resources}.
+  sort:
+    label: "Ordenar por:"
+    name: alfabético
+    created_at: fecha de creación
+    updated_at: fecha de última actualización

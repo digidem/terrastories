@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ "$CHECK_BUNDLER" = "yes" ]
+then
+  bundle check || bundle install
+fi
+
+rm -f tmp/pids/server.pid
+
+if [[ "$AUTO_RUN_MIGRATIONS" == "on" ]];
+then
+  bundle exec rails db:prepare
+fi
+
+echo "Starting Rails Server..."
+if [[ "$RAILS_ENV" == "development" ]]
+then
+  ./bin/dev
+else
+  bundle exec rails server --binding 0.0.0.0
+fi

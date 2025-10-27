@@ -1,0 +1,61 @@
+ja:
+  profile: Profile
+  interviewer: インタビュアー
+  import: Import
+  map:
+    center: Map Center
+    bounds: Map Bounds
+    bounds_description: The boundaries of the map determine the extent of where you can scroll on the map. Unrestricted, the map will be infinitely scrollable.
+    sw_corner: Southwest Corner
+    ne_corner: Northeast Corner
+    unrestricted_bounds: Allow unrestricted bounds
+    online: Online Map Configuration
+    settings: Map Settings
+    settings_description: Customize your community's map settings.
+    projection:
+      mercator: Mercator
+      albers: Albers
+      equalEarth: Equal Earth
+      equirectangular: Equirectangular
+      lambertConformalConic: Lambert Comformal Conic
+      naturalEarth: Natural Earth
+      winkelTripel: Winkel Tripel
+      globe: Globe
+  dashboard:
+    communities:
+      last_updated_on: 最終更新日 %{last_updated_on}
+    back_to_app: Back to App
+    community_settings: Community Settings
+    headings:
+      new_resource: "%{name}新規作成"
+    actions:
+      confirm: よろしいですか？
+      destroy: 削除
+      edit: 編集
+      new: 新規作成
+      back: 戻る
+      show_resource: "%{name}"
+    theme:
+      welcome_screen: Welcome Screen
+      background_img: Customize the background image on the landing page of your community.
+      sponsor_logos: Display logos on your community page. This could be your organization's logo, or that of a project sponsor. Multiple logos can be added.
+  search:
+    clear: クリア
+    label: 検索
+    heading: Search Results
+    results: 結果
+  filter:
+    all: All
+    any: Any
+    label: フィルタ
+    clear: クリアフィルタ
+  list:
+    prev: Prev
+    next: Next
+    no_results: There are no %{resources} available.
+    no_nested_results: This %{resource} has no %{resources}.
+  sort:
+    label: "並び替え："
+    name: アルファベット順
+    created_at: 作成日
+    updated_at: 最終更新日

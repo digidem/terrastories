@@ -1,0 +1,38 @@
+# Don't persist git configuration to image
+.git
+.gitattributes
+.gitignore
+
+# Ignore docker files
+*.dockerignore
+*Dockerfile
+
+# Ignore tooling
+Brewfile
+.gitlab-ci.yml
+.editorconfig
+.browserslistrc
+.byebug_history
+.eslintignore
+.eslintrc.json
+.postcssrc.yml
+.rspec
+
+Procfile
+
+# Ignore development
+.ruby-version
+.env.sample
+coverage/*
+tmp/*
+spec/*
+public/packs-test
+
+# Ignore node
+node_modules/*
+
+public/packs/*
+public/packs-test/*
+
+!public/assets/*
+!public/packs/*

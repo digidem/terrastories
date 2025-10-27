@@ -1,0 +1,109 @@
+<% content_for(:title) do %>
+  <%= @story.title %> | <%= t("story") %>
+<% end %>
+
+<% content_for(:main_heading) do %>
+<div class="columns">
+  <h2>
+    <% if @story.topic.present? %>
+      <div class="small"><%= @story.topic %></div>
+    <% end %>
+    <%= @story.title %>
+    <div class="small">
+      <% if @story.language.present? %>
+        <span class="badge badge-red"><%= @story.language %></span>
+      <% end %>
+
+      <% if @story.permission_level.present? %>
+        <span class="badge badge-green"><%= Story.human_attribute_name("permission_level.#{@story.permission_level}") %></span>
+      <% end %>
+    </div>
+  </h2>
+  <div class="actions">
+    <%= link_to t("dashboard.actions.edit"), edit_story_path(@story), class: "btn" if policy(@story).edit? %>
+    <%= link_to t("dashboard.actions.destroy"), story_path(@story), method: :delete, data: {confirm: t("dashboard.actions.confirm"), turbo_confirm: t("dashboard.actions.confirm"), turbo_method: :delete}, class: "btn btn-danger" if policy(@story).destroy? %>
+  </div>
+</div>
+<% end %>
+
+<div class="two-columns">
+  <div class="two-columns-right column-fixed-350">
+    <% if @story.places.any? %>
+      <section>
+        <div id="static-map"></div>
+        <% @story.places.each do |place| %>
+          <p>
+            <span class="badge badge-blue"><%= place.name[0].upcase %></span>
+            <%= place.name %>
+          </p>
+          <p>
+            <% if place.region.present? %>
+              <%= place.region %>
+            <% end %>
+            <% if place.type_of_place.present? %><span class="badge"><%= place.type_of_place %></span><% end %>
+          </p>
+        <% end %>
+      </section>
+    <% end %>
+
+    <section class="collection">
+      <% if @story.interviewer %>
+        <span class="card card--mini card--center card--noborder card--nogap">
+          <% if @story.interviewer.photo.attached? %>
+            <% if @story.interviewer.photo.variable? %>
+              <%= image_tag  @story.interviewer.photo.variant(resize_to_fill: [300, 300]), class: "img--rounded img--large", alt: @story.interviewer.name, title: @story.interviewer.name %>
+            <% else %>
+              <%= image_tag  @story.interviewer.photo, class: "img--rounded img--large", alt: @story.interviewer.name, title: @story.interviewer.name %>
+            <% end %>
+          <% else %>
+            <%= image_tag asset_path("speaker.png"), class: "img--rounded img--large", alt: @story.interviewer.name, title: @story.interviewer.name %>
+          <% end %>
+
+          <div><%= @story.interviewer.name %></div>
+          <div class="small"><%= t("interviewer") %></div>
+        </span>
+      <% end %>
+      <% policy_scope(@story.speakers).each do |speaker| %>
+        <span class="card card--mini card--center card--noborder card--nogap">
+          <% if speaker.photo.attached? %>
+            <% if speaker.photo.variable? %>
+              <%= image_tag speaker.photo.variant(resize_to_fill: [300, 300]), class: "img--rounded img--large", alt: speaker.name, title: speaker.name %>
+            <% else %>
+              <%= image_tag speaker.photo, class: "img--rounded img--large", alt: speaker.name, title: speaker.name %>
+            <% end %>
+          <% else %>
+            <%= image_tag asset_path("speaker.png"), class: "img--rounded img--large", alt: speaker.name, title: speaker.name %>
+          <% end %>
+
+          <div><%= speaker.name %></div>
+          <div class="small"><%= t("speaker") %></div>
+        </span>
+      <% end %>
+    </section>
+  </div>
+
+  <div class="two-columns-left">
+    <p class="render-lines"><%= sanitize @story.desc, tags: %w(strong em u) %></p>
+
+    <% @story.media.each do |media| %>
+      <p class="media">
+        <%= render partial: "media", locals: {media: media.media, size: 400} %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<script>
+Terrastories.map_utils.staticMap(
+  <%= current_community.theme.use_maplibre? %>,
+  {
+    accessToken: "<%= current_community.theme.mapbox_token %>",
+    container: "static-map", // container ID
+    zoom: <%= current_community.theme.zoom %>,
+    style: "<%= current_community.theme.map_style_url %>", // style URL or style object
+    basemapStyle: "<%= current_community.theme.basemap_style %>",
+    allowDrag: true,
+  },
+  <%= raw @story.static_map_markers %>
+)
+</script>

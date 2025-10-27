@@ -1,0 +1,21 @@
+<div class="onboarding">
+  <div class="onboarding-card">
+    <%= image_tag 'logocombo.svg', alt: 'Terrastories' %>
+
+    <h2><%= t(".welcome") %></h2>
+
+    <p><%= t(".introduction") %></p>
+
+    <%= link_to t(".begin"), onboard_admin_account_path, class: "button" %>
+
+    <div class="language-picker">
+      <%= t("language") %>:
+      <%= application_locales %>
+    </div>
+  </div>
+
+  <span class="sponsors"><%= t("sponsored_by") %></span>
+  <div class="logo">
+    <%= image_tag "digitaldemocracy.png" %>
+  </div>
+</div>

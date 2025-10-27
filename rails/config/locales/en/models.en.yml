@@ -1,0 +1,191 @@
+en:
+  errors:
+    messages:
+      map_bounds: All four bounding box values must be set, or left blank
+      invalid_latitude: value should be between -90 and 90
+      invalid_longitude: value should be between -180 and 180
+      invalid_zoom_level: value should be between 0 and 22
+      invalid_pitch: value should be 0 and 85
+      invalid_bearing: value should be between -180 and 180
+      invalid_username_format: cannot contain spaces
+      # START Active Storage Validations
+      content_type_invalid: "has an invalid content type"
+      file_size_out_of_range: "size %{file_size} is not between required range"
+      limit_out_of_range: "total number is out of range"
+      image_metadata_missing: "is not a valid image"
+      dimension_min_inclusion: "must be greater than or equal to %{width} x %{height} pixel."
+      dimension_max_inclusion: "must be less than or equal to %{width} x %{height} pixel."
+      dimension_width_inclusion: "width is not included between %{min} and %{max} pixel."
+      dimension_height_inclusion: "height is not included between %{min} and %{max} pixel."
+      dimension_width_greater_than_or_equal_to: "width must be greater than or equal to %{length} pixel."
+      dimension_height_greater_than_or_equal_to: "height must be greater than or equal to %{length} pixel."
+      dimension_width_less_than_or_equal_to: "width must be less than or equal to %{length} pixel."
+      dimension_height_less_than_or_equal_to: "height must be less than or equal to %{length} pixel."
+      dimension_width_equal_to: "width must be equal to %{length} pixel."
+      dimension_height_equal_to: "height must be equal to %{length} pixel."
+      aspect_ratio_not_square: "must be a square image"
+      aspect_ratio_not_portrait: "must be a portrait image"
+      aspect_ratio_not_landscape: "must be a landscape image"
+      aspect_ratio_is_not: "must have an aspect ratio of %{aspect_ratio}"
+      aspect_ratio_unknown: "has an unknown aspect ratio"
+      image_not_processable: "is not a valid image"
+      # END Active Storage Validations
+  helpers:
+    label:
+      visibility: Visibility
+      community:
+        public: Enable public interface
+        beta: Enable experimental beta features
+        background_img: Background Image
+        sponsor_logos: Sponsor Logos
+        display_image: Display image or logo
+        description: About your Community
+      speaker:
+        one: Speaker
+        name: Name
+        speaker_community: Speaker's Community
+        birthdate: Date of Birth
+        birthplace: Born Where
+        story_ids: Stories
+      story:
+        desc: Description
+        interviewer: Interviewer
+        video_unsupported: Sorry, your browser doesn't support embedded videos.
+        permissions:
+          anonymous: "Searchable"
+          user_only: "Member"
+          editor_only: "Editor"
+          admin_only: "Admin"
+        place_ids: Places
+        speaker_ids: Speakers
+      place:
+        one: Place
+        lat: Latitude
+        long: Longitude
+        name: Name
+        name_audio: Placename Audio
+        description: Description
+        type_of_place: Type of place
+        region: Region
+        story_ids: Stories
+      theme:
+        background_img: Background Image
+        sponsor_logos: Sponsor Logos
+        mapbox_style_url: Mapbox Style URL
+        mapbox_access_token: Mapbox access token associated with the style
+        mapbox_3d: Activate 3D Terrain view
+        map_projection: Set projection for map
+        protomaps_api_key: API Key (free at protomaps.com)
+        protomaps_basemap_style: Basemap Style
+        center_lat: Map center, latitude
+        center_long: Map center, longitude
+        sw_boundary_lat: SW bounding box, latitude (optional)
+        sw_boundary_long: SW bounding box, longitude (optional)
+        ne_boundary_lat: NE bounding box, latitude (optional)
+        ne_boundary_long: NE bounding box, longitude (optional)
+        zoom: Zoom level
+        pitch: Pitch degree
+        bearing: Bearing degree
+        display_resource: "Theme for Terrastories: %{community_name}"
+      user:
+        id: Id
+        email: Email
+        role: Role
+  activerecord:
+    errors:
+      models:
+        place:
+          attributes:
+            name_audio:
+              content_type: content type is not in list
+            photo:
+              content_type: content type is not in list
+        story:
+          attributes:
+            place_ids:
+              blank: Your story must have a Place
+            speaker_ids:
+              blank: Your story must have at least one Speaker
+        theme:
+          attributes:
+            background_img:
+              content_type: content type is not in list
+            mapbox_access_token:
+              blank: is required when the Mapbox style URL is set.
+            mapbox_style_url:
+              blank: is required when the Mapbox access token is set.
+    # Used to auto-translate submit buttons
+    models:
+      community: Community
+      curriculum: Curriculum
+      user: User
+      place: Place
+      speaker: Speaker
+      story: Story
+      theme: Theme
+      media_link: Media Link
+      flipper_feature: Feature
+    # Used for model-based form labels and other attribute displays
+    attributes:
+      place:
+        name: Name
+        name_audio: Placename Audio
+        description: Description
+        type_of_place: Type of Place
+        region: Region
+        long: Longitude
+        lat: Latitude
+        story_ids: Stories
+        photo: Photo
+      speaker:
+        name: Name
+        story_ids: Stories
+        photo: Photo
+        speaker_community: Speaker's Community
+        birthdate: Date of Birth
+        birthplace_id: Born Where
+      story:
+        title: Title
+        desc: Description
+        language: Language
+        topic: Topic
+        date_interviewed: Date interviewed
+        media: Media
+        speaker_ids: Speakers
+        place_ids: Places
+        interview_location_id: Interview location
+        interviewer_id: Interviewer
+        permission_level: Permission level
+      story/permission_level:
+        anonymous: Anonymous
+        user_only: Member
+        editor_only: Editor
+      theme:
+        background_img: Background image
+        sponsor_logos: Sponsor logos
+        mapbox_style_url: Mapbox style URL
+        mapbox_access_token: Mapbox access token associated with the style
+        mapbox_3d: Activate 3D Terrain view for online map
+        center_lat: Latitude
+        center_long: Longitude
+        sw_boundary_lat: Min Latitude
+        sw_boundary_long: Min Longitude
+        ne_boundary_lat: Max Latitude
+        ne_boundary_long: Max Longitude
+        zoom: Zoom level
+        pitch: Pitch degrees
+        bearing: Bearing degrees
+        map_projection: Set projection for map
+      user:
+        login: Username or Email
+        name: Display Name
+        username: Username
+        email: Email
+        role: Role
+        password: Password
+        photo: Photo
+      user/role:
+        admin: Administrator
+        editor: Editor
+        member: Member
+        viewer: Viewer

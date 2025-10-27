@@ -1,0 +1,74 @@
+# PostgreSQL. Versions 9.1 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On OS X with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On OS X with MacPorts:
+#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem 'pg'
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  host: <%= ENV.fetch('DB_HOST', 'db') %>
+  port: <%= ENV.fetch('DB_PORT', 5432) %>
+  username: <%= ENV.fetch('DB_USERNAME', 'postgres') %>
+  password: <%= ENV.fetch('DB_PASSWORD', '') %>
+
+dev_overrides: &dev_overrides
+  host: <%= ENV.fetch('DEV_DB_HOST', ENV['DB_HOST'] || 'db') %>
+  port: <%= ENV.fetch('DEV_DB_PORT', ENV['DB_PORT'] || 5432) %>
+  username: <%= ENV.fetch('DEV_DB_USERNAME', ENV['DB_USERNAME'] || 'postgres') %>
+  password: <%= ENV.fetch('DEV_DB_PASSWORD', ENV['DB_PASSWORD'] || '') %>
+
+test_overrides: &test_overrides
+  host: <%= ENV.fetch('TEST_DB_HOST', ENV['DB_HOST'] || 'db') %>
+  port: <%= ENV.fetch('TEST_DB_PORT', ENV['DB_PORT'] || 5432) %>
+  username: <%= ENV.fetch('TEST_DB_USERNAME', ENV['DB_USERNAME'] || 'postgres') %>
+  password: <%= ENV.fetch('TEST_DB_PASSWORD', ENV['DB_PASSWORD'] || '') %>
+
+development:
+  <<: *default
+  <<: *dev_overrides
+  database: <%= ENV.fetch('DEV_DB_NAME', 'terrastories-dev') %>
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  <<: *test_overrides
+  database: <%= ENV.fetch('TEST_DB_NAME', 'terrastories-test') %>
+
+# As with config/secrets.yml, you never want to store sensitive information,
+# like your database password, in your source code. If your source code is
+# ever seen by anyone, they now have access to your database.
+#
+# Instead, provide the password as a unix environment variable when you boot
+# the app. Read http://guides.rubyonrails.org/configuring.html#configuring-a-database
+# for a full rundown on how to provide these environment variables in a
+# production deployment.
+#
+# On Heroku and other platform providers, you may have a full connection URL
+# available as an environment variable. For example:
+#
+#   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
+#
+# You can use this database configuration with:
+#
+#   production:
+#     url: <%= ENV['DATABASE_URL'] %>
+#
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+
+offline:
+  url: <%= ENV.fetch('DATABASE_URL', "postgresql://#{ENV.fetch('OFFLINE_DB_USERNAME', 'postgres')}:#{ENV.fetch('OFFLINE_DB_PASSWORD', 'postgres')}@#{ENV.fetch('OFFLINE_DB_HOST', 'db')}:#{ENV.fetch('OFFLINE_DB_PORT', 5432)}/#{ENV.fetch('OFFLINE_DB_NAME', 'terrastories-dev')}") %>

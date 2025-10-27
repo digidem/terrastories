@@ -1,0 +1,86 @@
+en:
+  profile: Profile
+  interviewer: Interviewer
+  import: Import
+  protomaps_basemap_styles:
+    contrast: Contrast
+    light: Light
+    dark: Dark
+    white: White
+    grayscale: Grayscale
+    black: Black
+  protomaps_basemap_markers:
+    default: "#3FB1CE"
+    contrast: "#B5C481"
+    light: "#3FB1CE"
+    dark: "#555"
+    white: "#bbb"
+    grayscale: "#999"
+    black: "#666"
+  map:
+    center: Map Center
+    bounds: Map Bounds
+    bounds_description: The boundaries of the map determine the extent of where you can scroll on the map. Unrestricted, the map will be infinitely scrollable.
+    sw_corner: Southwest Corner
+    ne_corner: Northeast Corner
+    unrestricted_bounds: Allow unrestricted bounds
+    online: Online Map Configuration
+    mapbox_configuration: Mapbox Map Configuration (Optional)
+    protomaps_configuration: Protomaps API Configuration (Optional)
+    settings: Map Settings
+    settings_description: Customize your community's map settings.
+    projection:
+      mercator: Mercator
+      albers: Albers
+      equalEarth: Equal Earth
+      equirectangular: Equirectangular
+      lambertConformalConic: Lambert Comformal Conic
+      naturalEarth: Natural Earth
+      winkelTripel: Winkel Tripel
+      globe: Globe
+  dashboard:
+    communities:
+      last_updated_on: Last updated on %{last_updated_on}
+    back_to_app: Back to App
+    community_settings: Community Settings
+    community:
+      settings: Settings
+      make_public: Public exploration of your community
+      public_link_available: Your public community is available here
+      copy_to_clipboard: Copy to Clipboard
+      copied_to_clipboard: Copied
+    headings:
+      new_resource: New %{name}
+    actions:
+      confirm: Are you sure?
+      destroy: Delete
+      edit: Edit
+      new: New
+      back: Back
+      show_resource: Show %{name}
+    theme:
+      welcome_screen: Welcome Screen
+      background_img: Customize the background image on the landing page of your community.
+      display_image: Your Community logo or another image to display as your community's public image.
+      sponsor_logos: Display logos on your community page. This could be your organization's logo, or that of a project sponsor. Multiple logos can be added.
+  search:
+    clear: Clear search
+    label: Search
+    heading: Search Results
+    results: results
+  filter:
+    all: All
+    any: Any
+    label: Filter
+    clear: Clear Filters
+  list:
+    prev: Prev
+    next: Next
+    no_results: There are no %{resources} available.
+    no_nested_results: This %{resource} has no %{resources}.
+  sort:
+    label: Sort by
+    direction: Sort dir
+    name: alphabetical
+    created_at: date created
+    updated_at: date last updated

@@ -1,0 +1,159 @@
+pt:
+  errors:
+    messages:
+      map_bounds: Os valores das quatro caixas delimitadoras devem ser determinados, ou deixados vazios
+      invalid_latitude: valor deve ser entre -90 e 90
+      invalid_longitude: valor deve ser entre -180 e 180
+      invalid_zoom_level: valor deve ser entre 0 e 22
+      invalid_pitch: valor deve ser entre 0 e 85
+      invalid_bearing: valor deve ser entre -180 e 180
+      invalid_username_format: não pode conter espaços
+  helpers:
+    label:
+      visibility: Visibilidade
+      speaker:
+        one: Orador/a
+        name: Nome
+        speaker_community: Comunidade de palestrantes
+        birthdate: Data de nascimento
+        birthplace: Local de nascimento
+        story_ids: Histórias
+      story:
+        desc: Descrição
+        interviewer: Entrevistador/a
+        video_unsupported: Seu navegador não consegue ter vídeos inseridos.
+        permissions:
+          anonymous: "Pesquisável"
+          user_only: "Membro"
+          editor_only: "Editor/a"
+          admin_only: "Administrador/a"
+        place_ids: Lugares
+        speaker_ids: Oradores
+      place:
+        one: Lugar
+        lat: Latitude
+        long: Longitude
+        name: Nome
+        name_audio: Áudio do nome do lugar
+        description: Descrição
+        type_of_place: Tipo de lugar
+        region: Região
+        story_ids: Histórias
+      theme:
+        background_img: Imagem de fundo (para tela de boas-vindas)
+        sponsor_logos: Logotipos de patrocinadores (para tela de boas-vindas)
+        mapbox_style_url: URL de estilo Mapbox (para mapas online)
+        mapbox_access_token: Token de acesso Mapbox associado ao estilo
+        mapbox_3d: Ative a visualização 3D do terreno para o mapa online
+        map_projection: Definir projeção para o mapa
+        center_lat: Centro do mapa, latitude
+        center_long: Centro do mapa, longitude
+        sw_boundary_lat: Caixa delimitadora sudoeste, latitude (opcional)
+        sw_boundary_long: Caixa delimitadora sudoeste, longitude (opcional)
+        ne_boundary_lat: Caixa delimitadora nordeste, latitude (opcional)
+        ne_boundary_long: Caixa delimitadora nordeste, longitude (opcional)
+        zoom: Nivel de zoom do mapa (1 a 22)
+        pitch: Grau de pitch do mapa (0 a 90)
+        bearing: Grau de rolamento do mapa (-180 a 180)
+        display_resource: "Tema para Terrastories: %{community_name}"
+      user:
+        id: Id
+        email: Email
+        role: Função
+  activerecord:
+    errors:
+      models:
+        place:
+          attributes:
+            name_audio:
+              content_type: o tipo de conteúdo não está na lista
+            photo:
+              content_type: o tipo de conteúdo não está na lista
+        story:
+          attributes:
+            place_ids:
+              blank: Sua história deve ter um Lugar
+            speaker_ids:
+              blank: Sua história deve ter um Orador/a
+        theme:
+          attributes:
+            background_img:
+              content_type: o tipo de conteúdo não está na lista
+            mapbox_access_token:
+              blank: é requirido quando a URL de estilo Mapbox é determinada.
+            mapbox_style_url:
+              blank: é requirido quando o token de acesso Mapbox é determinado.
+    # Used to auto-translate submit buttons
+    models:
+      community: Comunidade
+      curriculum: Curriculum
+      user: Usuário/a
+      place: Lugar
+      speaker: Orador/a
+      story: História
+      theme: Tema
+      media_link: Link de Mídia
+    # Used for model-based form labels and other attribute displays
+    attributes:
+      place:
+        name: Nome
+        name_audio: Áudio do nome do lugar
+        description: Descrição
+        type_of_place: Tipo de lugar
+        region: Região
+        long: Longitude
+        lat: Latitude
+        story_ids: Histórias
+        photo: Foto
+      speaker:
+        name: Nome
+        story_ids: Histórias
+        photo: Foto
+        speaker_community: Comunidade de palestrantes
+        birthdate: Data de nascimento
+        birthplace_id: Local de Nascimento
+      story:
+        title: Título
+        desc: Descrição
+        language: Idioma
+        topic: Assunto
+        date_interviewed: Data da entrevista
+        media: Mídia
+        speaker_ids: Oradores
+        place_ids: Lugares
+        interview_location_id: Local da entrevista
+        interviewer_id: Entrevistador/a
+        permission_level: Nível de permissão
+      story/permission_level:
+        anonymous: Anônimo
+        user_only: Membro
+        editor_only: Editor/a
+      theme:
+        background_img: Imagem de fundo
+        sponsor_logos: Logotipos de patrocinadores
+        mapbox_style_url: URL de estilo Mapbox
+        mapbox_access_token: Token de acesso Mapbox associado ao estilo
+        mapbox_3d: Ative a visualização 3D do terreno para o mapa online
+        center_lat: Latitude
+        center_long: Longitude
+        sw_boundary_lat: Latitude Mínima
+        sw_boundary_long: Longitude Mínima
+        ne_boundary_lat: Latitude Máxima
+        ne_boundary_long: Longitude Máxima
+        zoom: Nivel de zoom
+        pitch: Grau de pitch
+        bearing: Grau de rolamento
+        map_projection: Determine uma projeção para o mapa
+      user:
+        login: Nome de usuário/a ou email
+        name: Nome de exibição
+        username: Nome de usuário/a
+        email: Email
+        role: Função
+        password: Senha
+        photo: Foto
+      user/role:
+        admin: Administrador/a
+        editor: Editor/a
+        member: Membro/a
+        viewer: Espectador/a

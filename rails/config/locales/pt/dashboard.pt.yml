@@ -1,0 +1,61 @@
+pt:
+  profile: Perfil
+  interviewer: Entrevistador/a
+  import: Importar
+  map:
+    center: Centro do mapa
+    bounds: Caixa delimitadora do mapa
+    bounds_description: Os limites do mapa determinam a extensão até onde é possível ir no mapa. Se não houver restrições, o mapa pode ser infinito.
+    sw_corner: Caixa delimitadora sudoeste
+    ne_corner: Caixa delimitadora nordeste
+    unrestricted_bounds: Permitir caixas delimitadoras irrestritas
+    online: Configuração de mapa online
+    settings: Configurações do mapa
+    settings_description: Customize as configurações do mapa de sua comunidade
+    projection:
+      mercator: Mercator
+      albers: Albers
+      equalEarth: Terra igual
+      equirectangular: Equiretangular
+      lambertConformalConic: Conica conforme de Lambert
+      naturalEarth: Terra natural
+      winkelTripel: Winkel Tripel
+      globe: Globo
+  dashboard:
+    communities:
+      last_updated_on: Última atualização em %{last_updated_on}
+    back_to_app: Volte para o aplicativo
+    community_settings: Configurações de comunidade
+    headings:
+      new_resource: Novo %{name}
+    actions:
+      confirm: Você tem certeza?
+      destroy: Deletar
+      edit: Editar
+      new: Novo
+      back: Voltar
+      show_resource: Mostrar %{name}
+    theme:
+      welcome_screen: Tela de boas-vindas
+      background_img: Customize a imagem de fundo da tela inicial de sua comunidade.
+      sponsor_logos: Mostre logos na página de sua comunidade. Pode ser o logo de sua organização ou o logo de um patrocinador. Multiplos logos podem ser adicionados.
+  search:
+    clear: Limpar pesquisa
+    label: Pesquisa
+    heading: Resultados da pesquisa
+    results: resultados
+  filter:
+    all: Todos
+    any: Qualquer um
+    label: Filtrar
+    clear: Limpar filtros
+  list:
+    prev: Prev
+    next: Prox
+    no_results: Não há nenhum %{resources} disponível.
+    no_nested_results: Este %{resource} não contém nenhum %{resources}.
+  sort:
+    label: Ordenar por
+    name: alfabética
+    created_at: data da criação
+    updated_at: data da última atualização

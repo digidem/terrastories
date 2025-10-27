@@ -1,0 +1,61 @@
+.badge {
+  @include ui-font;
+
+  font-size: .75rem;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background-color: $dark-blue;
+  color: $white;
+
+  &-red {
+    background-color: $red;
+  }
+
+  &-orange {
+    background-color: $orange;
+  }
+
+  &-yellow {
+    background-color: $yellow;
+  }
+
+  &-green {
+    background-color: $green;
+  }
+
+  &-blue {
+    background-color: $blue;
+  }
+
+  &__state {
+    display: inline-block;
+
+    &-on {
+      background-color: $green;
+    }
+
+    &-conditional {
+      background-color: $yellow;
+    }
+
+    &-off {
+      background-color: $red;
+    }
+
+    &-disabled {
+      background-color: $light-gray;
+    }
+
+    &-group {
+      background-color: $blue;
+    }
+
+    &-community {
+      background-color: $orange;
+    }
+
+    &-all {
+      background-color: $green;
+    }
+  }
+}

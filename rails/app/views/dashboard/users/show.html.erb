@@ -1,0 +1,35 @@
+<% content_for(:title) do %>
+  <%= @user.display_name %> | <%= t("user") %>
+<% end %>
+
+<% content_for(:main_heading) do %>
+<div class="columns">
+  <div class="avatar-card">
+  <% if @user.photo.attached? %>
+    <% if @user.photo.variable? %>
+      <%= image_tag @user.photo.variant(resize_to_fill: [300, 300]), class: "img--rounded img--mega", alt: @user.display_name, title: @user.display_name %>
+    <% else %>
+      <%= image_tag @user.photo, class: "img--rounded img--mega", alt: @user.display_name, title: @user.display_name %>
+    <% end %>
+  <% else %>
+    <%= image_tag asset_path("speaker.png"), class: "img--rounded img--mega", alt: @user.display_name, title: @user.display_name %>
+  <% end %>
+  <h2>
+    <div class="small">
+      <% if @user.name.present? %>
+        <%= @user.username %> //
+      <% end %>
+      <%= @user.email %>
+    </div>
+    <%= @user.display_name %>
+    <div class="small">
+      <span class="badge"><%= User.human_attribute_name("role.#{@user.role}") %></span>
+    </div>
+  </h2>
+  </div>
+  <div>
+    <%= link_to t("dashboard.actions.edit"), edit_user_path(@user), class: "btn" if policy(@user).edit? %>
+    <%= link_to t("dashboard.actions.destroy"), user_path(@user), method: :delete, data: {confirm: t("dashboard.actions.confirm"), turbo_confirm: t("dashboard.actions.confirm"), turbo_method: :delete}, class: "btn btn-danger" if policy(@user).destroy? %>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,55 @@
+<%= form_with model: @story, multipart: true, class: "form", locale: true do |f| %>
+  <%= render partial: "shared/form_errors", locals: { resource: @story } %>
+
+  <%= f.label :title, class: "required" %>
+  <%= f.text_field :title, required: true %>
+
+  <%= f.label :desc %>
+  <%= f.text_area :desc, rows: 3 %>
+
+  <%= f.label :language %>
+  <%= f.text_field :language %>
+
+  <%= f.label :topic %>
+  <%= f.text_field :topic %>
+
+  <%= f.label :date_interviewed %>
+  <%= f.date_field :date_interviewed %>
+
+  <%= f.label :media %>
+  <%= f.file_field :media, multiple: true %>
+
+  <% if @story.persisted? %>
+  <div class="with-media-list">
+    <% if @story.media.any? %>
+      <% @story.media.each do |media| %>
+        <span class="media-with-controls">
+          <%= render partial: "media", locals: {media: media.media, size: 150} %>
+          <%= link_to t("dashboard.actions.destroy"), story_delete_media_path(@story, media.id), class: "delete-link", method: :delete, data: {confirm: t("dashboard.actions.confirm"), turbo_confirm: t("dashboard.actions.confirm"), turbo_method: :delete}, remote: true %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+  <% end %>
+
+  <%= f.label :speaker_ids, class: "required" %>
+  <div class="checklist">
+    <%= f.collection_check_boxes :speaker_ids, current_community.speakers, :id, :name, required: true %>
+  </div>
+
+  <%= f.label :place_ids, class: "required" %>
+  <div class="checklist">
+    <%= f.collection_check_boxes :place_ids, current_community.places, :id, :name, required: true %>
+  </div>
+
+  <%= f.label :interview_location_id %>
+  <%= f.collection_select :interview_location_id, current_community.places, :id, :name, include_blank: true %>
+
+  <%= f.label :interviewer_id %>
+  <%= f.collection_select :interviewer_id, current_community.speakers, :id, :name, include_blank: true %>
+
+  <%= f.label :permission_level %>
+  <%= f.select :permission_level, Story.permission_levels.keys.map { |k| [Story.human_attribute_name("permission_level.#{k}"), k]} %>
+
+  <%= f.submit %>
+<% end %>
