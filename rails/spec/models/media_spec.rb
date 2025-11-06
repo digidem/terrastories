@@ -19,8 +19,10 @@ RSpec.describe Media, type: :model do
     it "validates audio types" do
       is_expected.to validate_content_type_of(:media).allowing(
         'audio/mpeg',
+        'audio/wav',
         'audio/x-wav',
         'audio/mp4',
+        'audio/m4a',
         'audio/x-m4a',
         'audio/x-aac',
         'audio/x-flac',
