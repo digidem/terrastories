@@ -34,8 +34,9 @@ WORKDIR /tmp
 
 COPY rails/Gemfile* /tmp/
 RUN bundle config set --local path /usr/local/bundle && \
+    bundle config set --local retry 5 && \
     bundle config build.nokogiri --use-system-libraries && \
-    bundle install
+    bundle install --retry=5
 
 WORKDIR /api
 
