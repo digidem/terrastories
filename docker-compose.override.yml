@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: rails/Dockerfile
       target: devcore
+      args:
+        RUBY_BASE_IMAGE: ${RUBY_BASE_IMAGE:-ruby:3.2.4-slim}
     image: terrastories/devcore:local
     volumes:
       - log_data:/api/log
