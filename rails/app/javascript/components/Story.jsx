@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import StoryMedia from "./StoryMedia";
 
-function Story({ story, storyClass, onStoryClick }) {
+function Story({ story, storyClass = "", onStoryClick = () => {} }) {
   const { t } = useTranslation();
 
   const renderSpeakers = (speakers) => (
@@ -68,13 +68,8 @@ Story.propTypes = {
       })
     ),
   }).isRequired,
-  onStoryClick: PropTypes.func,
-  storyClass: PropTypes.string,
-};
-
-Story.defaultProps = {
-  onStoryClick: () => {},
-  storyClass: "",
+  onStoryClick: PropTypes.func.isRequired,
+  storyClass: PropTypes.string.isRequired,
 };
 
 export default Story;

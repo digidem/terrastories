@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 function Popup({ feature, onCloseClick }) {
   const { t } = useTranslation();
   const {
-    id,
     name,
     photo_url: photoUrl,
     name_audio_url: nameAudioUrl,
@@ -14,8 +13,10 @@ function Popup({ feature, onCloseClick }) {
     type_of_place: typeOfPlace,
   } = feature.properties;
 
+  const featureId = feature.properties.id ?? feature.id ?? "place";
+
   return (
-    <div id={`popup-${id}`}>
+    <div id={`popup-${featureId}`}>
       <div className="ts-markerPopup-header">
         <h1>{name}</h1>
         <button className="ts-markerPopup-header-button" type="button" onClick={onCloseClick}>
@@ -54,8 +55,9 @@ function Popup({ feature, onCloseClick }) {
 
 Popup.propTypes = {
   feature: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     properties: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       name: PropTypes.string,
       photo_url: PropTypes.string,
       name_audio_url: PropTypes.string,

@@ -1,10 +1,23 @@
 import layers from "protomaps-themes-base"
 import bbox from "@turf/bbox"
 
+const FALLBACK_STYLE_URL = "https://demotiles.maplibre.org/style.json"
+
 export function mapStyleLayers(mapStyle, theme = "contrast") {
+  if (mapStyle && typeof mapStyle === "object") return mapStyle
+
+  const styleUrl = typeof mapStyle === "string" && mapStyle.trim().length > 0 ? mapStyle : FALLBACK_STYLE_URL
+
+  if (styleUrl === FALLBACK_STYLE_URL && (!mapStyle || mapStyle === "")) {
+    if (process.env.NODE_ENV !== "production") {
+      /* eslint-disable-next-line no-console */
+      console.warn("Map style URL is not configured; falling back to the MapLibre demo style. Configure MAPBOX_STYLE, PROTOMAPS_API_KEY, or TILESERVER_URL for custom maps.")
+    }
+  }
+
   // For custom map styles from Mapbox, Tileserver, or PMtiles that
   // aren't supplied from Protomaps directly, return as-is.
-  if (!mapStyle.includes("api.protomaps.com")) return mapStyle
+  if (!styleUrl.includes("api.protomaps.com")) return styleUrl
 
   // Protomaps Free API
   const style = {
@@ -17,7 +30,7 @@ export function mapStyleLayers(mapStyle, theme = "contrast") {
     protomaps: {
       type: "vector",
       attribution: '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
-      url: mapStyle
+      url: styleUrl
     }
   }
 
