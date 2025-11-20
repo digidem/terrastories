@@ -27,6 +27,7 @@ en:
     online: Online Map Configuration
     mapbox_configuration: Mapbox Map Configuration (Optional)
     protomaps_configuration: Protomaps API Configuration (Optional)
+    expose_mapbox_credentials_hint: Public Explore map will only display Mapbox tiles when exposed.
     settings: Map Settings
     settings_description: Customize your community's map settings.
     projection:
