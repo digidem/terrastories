@@ -49,6 +49,8 @@ RSpec.describe "Public Community (show) Endpoint", type: :request do
       expect(json_response["mapConfig"]).to include(
         "mapboxAccessToken",
         "mapboxStyle",
+        "mapboxStyleUrl",
+        "mapboxStyleAccessToken",
         "mapbox3dEnabled",
         "mapProjection",
         "centerLat",
@@ -63,6 +65,15 @@ RSpec.describe "Public Community (show) Endpoint", type: :request do
         "pitch",
         "bearing"
       )
+    end
+
+    it "returns the configured mapbox style details when present" do
+      public_community.theme.update!(mapbox_style_url: "mapbox://styles/example/style", mapbox_access_token: "pk.123")
+
+      get "/api/communities/cool_community"
+
+      expect(json_response.dig("mapConfig", "mapboxStyleUrl")).to eq("mapbox://styles/example/style")
+      expect(json_response.dig("mapConfig", "mapboxStyleAccessToken")).to eq("pk.123")
     end
   end
 end

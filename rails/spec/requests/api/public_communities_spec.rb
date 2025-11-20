@@ -24,6 +24,17 @@ RSpec.describe "Public Communities Endpoint", type: :request do
     expect(json_response.first.keys).to include("displayImage")
   end
 
+  it "exposes mapbox style configuration details" do
+    public_community.theme.update!(mapbox_style_url: "mapbox://styles/example/style", mapbox_access_token: "pk.123")
+
+    get "/api/communities"
+
+    config = json_response.first.fetch("mapConfig")
+    expect(config.keys).to include("mapboxStyleUrl", "mapboxStyleAccessToken")
+    expect(config["mapboxStyleUrl"]).to eq("mapbox://styles/example/style")
+    expect(config["mapboxStyleAccessToken"]).to eq("pk.123")
+  end
+
   context "with search" do
     it "can be filtered with case insensitive query" do
       get "/api/communities", params: {search: "cool"}
