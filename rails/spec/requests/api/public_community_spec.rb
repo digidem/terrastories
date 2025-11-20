@@ -49,8 +49,6 @@ RSpec.describe "Public Community (show) Endpoint", type: :request do
       expect(json_response["mapConfig"]).to include(
         "mapboxAccessToken",
         "mapboxStyle",
-        "mapboxStyleUrl",
-        "mapboxStyleAccessToken",
         "mapbox3dEnabled",
         "mapProjection",
         "centerLat",
@@ -72,8 +70,8 @@ RSpec.describe "Public Community (show) Endpoint", type: :request do
 
       get "/api/communities/cool_community"
 
-      expect(json_response.dig("mapConfig", "mapboxStyleUrl")).to eq("mapbox://styles/example/style")
-      expect(json_response.dig("mapConfig", "mapboxStyleAccessToken")).to eq("pk.123")
+      expect(json_response.dig("mapConfig", "mapboxStyle")).to eq("mapbox://styles/example/style")
+      expect(json_response.dig("mapConfig", "mapboxAccessToken")).to eq("pk.123")
     end
   end
 end
