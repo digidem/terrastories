@@ -1,8 +1,13 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const { loginToApp, ensureHome } = require('./support/login');
 
-test('capture console errors and story list', async ({ page }) => {
+const hasCreds = ['PLAYWRIGHT_LOGIN_URL', 'PLAYWRIGHT_LOGIN_USERNAME', 'PLAYWRIGHT_LOGIN_PASSWORD']
+  .every(key => !!process.env[key]);
+
+const run = hasCreds ? test : test.skip;
+
+run('capture console errors and story list', async ({ page }) => {
   const errors = [];
   const logs = [];
 
@@ -66,15 +71,7 @@ test('capture console errors and story list', async ({ page }) => {
   fs.writeFileSync('/tmp/console-errors.json', JSON.stringify({ errors, logs }, null, 2));
   fs.writeFileSync('/tmp/story-list-info.json', JSON.stringify(storyListInfo, null, 2));
 
-  console.log('\n=== CONSOLE ERRORS ===');
-  console.log('Error count:', errors.length);
-  errors.forEach(err => console.log('ERROR:', err));
-
-  console.log('\n=== STORY LIST INFO ===');
-  console.log('StoryList found:', storyListInfo.storyListFound);
-  console.log('Story count:', storyListInfo.storyCount);
-  console.log('Story titles:', storyListInfo.storyTitles);
-
-  console.log('\n=== RECENT CONSOLE LOGS ===');
-  logs.slice(-10).forEach(log => console.log(log));
+  expect(errors).toEqual([]);
+  expect(storyListInfo.storyListFound).toBe(true);
+  expect(storyListInfo.storyCount).toBeGreaterThan(0);
 });

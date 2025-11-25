@@ -1,7 +1,12 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const { loginToApp, ensureHome } = require('./support/login');
 
-test('quick story check', async ({ page }) => {
+const hasCreds = ['PLAYWRIGHT_LOGIN_URL', 'PLAYWRIGHT_LOGIN_USERNAME', 'PLAYWRIGHT_LOGIN_PASSWORD']
+  .every(key => !!process.env[key]);
+
+const run = hasCreds ? test : test.skip;
+
+run('quick story check', async ({ page }) => {
   await loginToApp(page);
   await ensureHome(page);
   await page.waitForTimeout(5000);
@@ -10,5 +15,5 @@ test('quick story check', async ({ page }) => {
     return document.querySelectorAll('.story').length;
   });
 
-  console.log('Story count:', storyCount);
+  expect(storyCount).toBeGreaterThan(0);
 });

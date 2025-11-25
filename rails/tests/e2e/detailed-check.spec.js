@@ -1,8 +1,13 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const { loginToApp, ensureHome } = require('./support/login');
 
-test('detailed component check', async ({ page }) => {
+const hasCreds = ['PLAYWRIGHT_LOGIN_URL', 'PLAYWRIGHT_LOGIN_USERNAME', 'PLAYWRIGHT_LOGIN_PASSWORD']
+  .every(key => !!process.env[key]);
+
+const run = hasCreds ? test : test.skip;
+
+run('detailed component check', async ({ page }) => {
   const logs = [];
 
   page.on('console', msg => logs.push(`[${msg.type()}] ${msg.text()}`));
@@ -34,4 +39,8 @@ test('detailed component check', async ({ page }) => {
 
   fs.writeFileSync('/tmp/component-status.json', JSON.stringify(componentStatus, null, 2));
   fs.writeFileSync('/tmp/console-logs.txt', logs.join('\n'));
+
+  expect(componentStatus.appDiv).toBe(true);
+  expect(componentStatus.cardDiv).toBe(true);
+  expect(componentStatus.storyDivs).toBeGreaterThan(0);
 });
