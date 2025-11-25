@@ -1,8 +1,10 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const fs = require('fs');
-const { loginToApp, ensureHome } = require('./support/login');
+const { loginToApp, ensureHome, hasLoginCredentials } = require('./support/login');
 
-test('detailed component check', async ({ page }) => {
+const run = hasLoginCredentials() ? test : test.skip;
+
+run('detailed component check', async ({ page }) => {
   const logs = [];
 
   page.on('console', msg => logs.push(`[${msg.type()}] ${msg.text()}`));
@@ -34,4 +36,9 @@ test('detailed component check', async ({ page }) => {
 
   fs.writeFileSync('/tmp/component-status.json', JSON.stringify(componentStatus, null, 2));
   fs.writeFileSync('/tmp/console-logs.txt', logs.join('\n'));
+
+  expect(componentStatus.appDiv).toBe(true);
+  expect(componentStatus.cardDiv).toBe(true);
+  // Allow zero stories in seedless environments; still asserts page renders key containers.
+  expect(componentStatus.storyDivs).toBeGreaterThanOrEqual(0);
 });

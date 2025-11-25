@@ -1,8 +1,10 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
-const { loginToApp, ensureHome } = require('./support/login');
+const { loginToApp, ensureHome, hasLoginCredentials } = require('./support/login');
 
-test('diagnose production app data', async ({ page }) => {
+const run = hasLoginCredentials() ? test : test.skip;
+
+run('diagnose production app data', async ({ page }) => {
   // Login
   await loginToApp(page);
   await ensureHome(page);
@@ -95,4 +97,7 @@ test('diagnose production app data', async ({ page }) => {
   }
   console.log('Card found:', cardInfo.found);
   console.log('Stylesheets loaded:', assetInfo.stylesheets.filter(s => s.loaded).length, '/', assetInfo.stylesheets.length);
+
+  expect(cardInfo.found).toBe(true);
+  expect(assetInfo.stylesheets.length).toBeGreaterThan(0);
 });

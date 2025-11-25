@@ -1,14 +1,19 @@
-const { test } = require('@playwright/test');
-const { loginToApp, ensureHome } = require('./support/login');
+const { test, expect } = require('@playwright/test');
+const { loginToApp, ensureHome, hasLoginCredentials } = require('./support/login');
 
-test('quick story check', async ({ page }) => {
+const run = hasLoginCredentials() ? test : test.skip;
+
+run('quick story check', async ({ page }) => {
   await loginToApp(page);
   await ensureHome(page);
   await page.waitForTimeout(5000);
 
-  const storyCount = await page.evaluate(() => {
-    return document.querySelectorAll('.story').length;
-  });
+  const { storyCount, cardFound } = await page.evaluate(() => ({
+    storyCount: document.querySelectorAll('.story').length,
+    cardFound: !!document.querySelector('.card')
+  }));
 
-  console.log('Story count:', storyCount);
+  expect(cardFound).toBe(true);
+  // Allow environments without seed data; still validates render.
+  expect(storyCount).toBeGreaterThanOrEqual(0);
 });
