@@ -1,11 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
-const { loginToApp, ensureHome } = require('./support/login');
+const { loginToApp, ensureHome, hasLoginCredentials } = require('./support/login');
 
-const hasCreds = ['PLAYWRIGHT_LOGIN_URL', 'PLAYWRIGHT_LOGIN_USERNAME', 'PLAYWRIGHT_LOGIN_PASSWORD']
-  .every(key => !!process.env[key]);
-
-const run = hasCreds ? test : test.skip;
+const run = hasLoginCredentials() ? test : test.skip;
 
 run('capture console errors and story list', async ({ page }) => {
   const errors = [];

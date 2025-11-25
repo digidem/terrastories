@@ -62,6 +62,12 @@ function requireEnv(name) {
   return value;
 }
 
+function hasLoginCredentials() {
+  loadEnvFilesOnce();
+  return ['PLAYWRIGHT_LOGIN_URL', 'PLAYWRIGHT_LOGIN_USERNAME', 'PLAYWRIGHT_LOGIN_PASSWORD']
+    .every(key => !!process.env[key]);
+}
+
 function getLoginCredentials() {
   return {
     url: requireEnv('PLAYWRIGHT_LOGIN_URL'),
@@ -116,4 +122,4 @@ async function ensureHome(page) {
   await page.waitForURL('**/home', { timeout: 20000 });
 }
 
-module.exports = { getLoginCredentials, loginToApp, ensureHome };
+module.exports = { getLoginCredentials, loginToApp, ensureHome, hasLoginCredentials };
