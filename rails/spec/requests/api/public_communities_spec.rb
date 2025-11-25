@@ -52,6 +52,19 @@ RSpec.describe "Public Communities Endpoint", type: :request do
     expect(config["mapboxAccessToken"]).to be_nil
   end
 
+  it "still returns non-Mapbox style when credentials are not exposed" do
+    public_community.theme.update!(
+      protomaps_api_key: "abc123",
+      expose_mapbox_credentials: false
+    )
+
+    get "/api/communities"
+
+    config = json_response.first.fetch("mapConfig")
+    expect(config["mapboxAccessToken"]).to be_nil
+    expect(config["mapboxStyle"]).to eq("https://api.protomaps.com/tiles/v3.json?key=abc123")
+  end
+
   context "with search" do
     it "can be filtered with case insensitive query" do
       get "/api/communities", params: {search: "cool"}

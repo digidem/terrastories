@@ -90,5 +90,17 @@ RSpec.describe "Public Community (show) Endpoint", type: :request do
       expect(json_response.dig("mapConfig", "mapboxStyle")).to be_nil
       expect(json_response.dig("mapConfig", "mapboxAccessToken")).to be_nil
     end
+
+    it "returns non-Mapbox style when credentials are not exposed" do
+      public_community.theme.update!(
+        protomaps_api_key: "abc123",
+        expose_mapbox_credentials: false
+      )
+
+      get "/api/communities/cool_community"
+
+      expect(json_response.dig("mapConfig", "mapboxAccessToken")).to be_nil
+      expect(json_response.dig("mapConfig", "mapboxStyle")).to eq("https://api.protomaps.com/tiles/v3.json?key=abc123")
+    end
   end
 end
